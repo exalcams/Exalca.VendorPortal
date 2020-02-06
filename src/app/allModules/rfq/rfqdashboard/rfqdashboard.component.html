@@ -1,0 +1,93 @@
+<div id="chat" class=" page-layout carded fullwidth" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
+    <div fxFlex class="mt-20">
+      <mat-card class="fullHeight p-12">
+        <mat-card-content>
+          <div fxLayout="row">
+            <div fxFlex align="end">
+              <button *ngIf="SelectedRFQ" mat-raised-button color="accent" (click)="RespondRFQ()">Respond</button>
+            </div>
+          </div>
+          <div fxLayout="row" class="mt-8">
+            <div fxFlex="100">
+              <table mat-table [dataSource]="RFQDataSource">
+                <tr mat-header-row *matHeaderRowDef="RFQColumns">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: RFQColumns;"></tr>
+
+                <ng-container matColumnDef="Select">
+                  <th mat-header-cell *matHeaderCellDef>
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (change)="onChangeChk($event,row)" [checked]="SelectedRFQ?.RFQNUMBER===row.RFQNUMBER">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="RFQNUMBER">
+                  <th mat-header-cell *matHeaderCellDef>RFQ Number</th>
+                  <td mat-cell *matCellDef="let element">{{element.RFQNUMBER}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="RFQTYPE">
+                  <th mat-header-cell *matHeaderCellDef>RFQ Type</th>
+                  <td mat-cell *matCellDef="let element">{{element.RFQTYPE}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="CURRENCY">
+                  <th mat-header-cell *matHeaderCellDef>Currency</th>
+                  <td mat-cell *matCellDef="let element">{{element.CURRENCY}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="SUBMISSION_STARTS">
+                  <th mat-header-cell *matHeaderCellDef>Submission start</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.SUBMISSION_STARTS | date:'dd-MM-yyyy'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="SUBMISSION_CLOSE">
+                  <th mat-header-cell *matHeaderCellDef>Submission Close</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.SUBMISSION_CLOSE | date:'dd-MM-yyyy'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="PURCAHSE_PERDIOD_START">
+                  <th mat-header-cell *matHeaderCellDef>Validity start</th>
+                  <td mat-cell *matCellDef="let element"> {{element.PURCAHSE_PERDIOD_START | date:'dd-MM-yyyy'}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="PURCAHSE_PERDIOD_END">
+                  <th mat-header-cell *matHeaderCellDef>Validity end</th>
+                  <td mat-cell *matCellDef="let element"> {{element.PURCAHSE_PERDIOD_END | date:'dd-MM-yyyy'}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="STATUS">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">{{element.STATUS}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                  <th mat-header-cell *matHeaderCellDef>Action</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-stroked-button (click)="ReleaseRFQ(element)">Release</button>
+                  </td>
+                </ng-container>
+
+              </table>
+              <div *ngIf="!RFQs?.length">
+                <mat-icon style="color: #1b56ca;margin-top: 10px;margin-left: 70px">info</mat-icon>
+                <span style="margin-left: 10px;">The table does not contain any data</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent"
+        mode="indeterminate"></mat-progress-spinner>
+      <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+    </div>
+  </div>
+
+</div>
