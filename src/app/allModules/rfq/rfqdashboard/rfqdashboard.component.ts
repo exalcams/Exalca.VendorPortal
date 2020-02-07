@@ -137,7 +137,10 @@ export class RFQDashboardComponent implements OnInit {
     if (rfq) {
       if (rfq.STATUS.toLowerCase() === 'open') {
         this.notificationSnackBarComponent.openSnackBar('Please respond the RFQ and then release', SnackBarStatus.danger);
-      } else {
+      } else if (rfq.STATUS.toLowerCase() === 'released') {
+        this.notificationSnackBarComponent.openSnackBar('RFQ has already been released', SnackBarStatus.danger);
+      }
+      else {
         const Actiontype = 'Release';
         const Catagory = 'RFQ';
         this.OpenConfirmationDialog(Actiontype, Catagory, rfq);

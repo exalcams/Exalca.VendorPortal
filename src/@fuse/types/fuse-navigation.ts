@@ -1,11 +1,10 @@
-export interface FuseNavigationItem
-{
+export interface FuseNavigationItem {
     id: string;
     title: string;
     type: 'item' | 'group' | 'collapsable';
     translate?: string;
     icon?: string;
-    isSvgIcon?:boolean;
+    isSvgIcon?: boolean;
     hidden?: boolean;
     url?: string;
     classes?: string;
@@ -22,7 +21,6 @@ export interface FuseNavigationItem
     children?: FuseNavigationItem[];
 }
 
-export interface FuseNavigation extends FuseNavigationItem
-{
+export interface FuseNavigation extends FuseNavigationItem {
     children?: FuseNavigationItem[];
 }

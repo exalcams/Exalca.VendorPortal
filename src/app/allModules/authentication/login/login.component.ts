@@ -212,10 +212,11 @@ export class LoginComponent implements OnInit {
       this.children.push(
         {
           id: 'rfqDashboard',
-          title: 'RFQ Dashboard',
+          title: 'Dashboard',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
-          icon: 'dashboard',
+          icon: 'dashboardIcon',
+          isSvgIcon: true,
           url: '/rfq/dashboard',
         }
       );

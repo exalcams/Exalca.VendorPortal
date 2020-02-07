@@ -35,6 +35,7 @@ export class RFQResponseComponent implements OnInit {
   SelectedRFQ: RFQHeader;
   SelectedRFQWithItem: RFQWithItem;
   RFQResponseFormGroup: FormGroup;
+  RFQResponseItemFormGroup: FormGroup;
   RFQItemColumns: string[] = ['ITEM', 'MATERIAL', 'SHORT_TEXT', 'QTY', 'PRICE', 'PER_QTY', 'DELVEIRY_DATE',
     'RESP_DELVEIRY_DATE', 'PLANT', 'DELVEIRY_ADDRESS', 'SCHEDULE', 'SCHEDULED_QTY', 'VENDOR_MATERIAL_NUMNER',
     'TAX_CODE', 'INCO_TERM', 'EXPIRY_DATE', 'COUNTRY_OF_ORIGIN', 'MANUFACTURAR'
@@ -87,6 +88,8 @@ export class RFQResponseComponent implements OnInit {
       TELEPHONE: ['', Validators.required],
       LONG_TEXT_TABLE: ['', Validators.required],
       PAYMENT_TERMS: ['', Validators.required],
+    });
+    this.RFQResponseItemFormGroup = this._formBuilder.group({
       RFQItems: this.RFQItemFormArray
     });
     // this.SelectedRFQWithItem.PURCAHSE_PERDIOD_END
@@ -167,7 +170,7 @@ export class RFQResponseComponent implements OnInit {
   }
 
   GetRFQItemValues(): void {
-    const RFQItemsArr = this.RFQResponseFormGroup.get('RFQItems') as FormArray;
+    const RFQItemsArr = this.RFQResponseItemFormGroup.get('RFQItems') as FormArray;
     RFQItemsArr.controls.forEach((x) => {
       const ItemID = x.get('ITEM').value;
       const SelectedRFQItem = this.SelectedRFQWithItem.RFQItems.filter(y => y.ITEM === ItemID)[0];
@@ -190,9 +193,13 @@ export class RFQResponseComponent implements OnInit {
 
   SubmitClicked(): void {
     if (this.RFQResponseFormGroup.valid) {
-      const Actiontype = 'Respond';
-      const Catagory = 'RFQ';
-      this.OpenConfirmationDialog(Actiontype, Catagory);
+      if (this.RFQResponseItemFormGroup.valid) {
+        const Actiontype = 'Respond';
+        const Catagory = 'RFQ';
+        this.OpenConfirmationDialog(Actiontype, Catagory);
+      } else {
+        this.ShowValidationErrors(this.RFQResponseItemFormGroup);
+      }
     } else {
       this.ShowValidationErrors(this.RFQResponseFormGroup);
     }

@@ -9,9 +9,11 @@
     @include media-breakpoint-down(md) {
       padding: 0 !important;
     }
+
     .content-pos {
       margin-top: -27px !important;
     }
+
     .content-card {
       display: flex;
       flex: 1;
@@ -54,6 +56,7 @@
     // margin-left: -20px;
     // margin-top: 35px;
   }
+
   .borderBottom1 {
     border-bottom: 1px solid #efb577;
     border-radius: 1px;
@@ -62,18 +65,21 @@
     // margin-left: -20px;
     // margin-top: 35px;
   }
+
   .borderRightSide {
     // margin-right: 20px;
     // margin-left: -24px;
     padding: 5px;
     padding-left: 10px;
   }
+
   .borderRightSide1 {
     margin-right: 20px;
     margin-left: -24px;
     padding: 5px;
     padding-left: 10px;
   }
+
   .search {
     height: 36px;
     line-height: 36px;
@@ -102,15 +108,18 @@
       border: none;
     }
   }
+
   .side-bar {
     display: flex;
     flex: 1;
     flex-direction: column;
+
     .sidenav-content {
       overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
   }
+
   .side-bar-items {
     text-decoration: none !important;
     display: flex;
@@ -123,11 +132,13 @@
     border-radius: 0 25px 25px 0;
     margin-right: 7px;
   }
+
   .roundCommon {
     height: 20px;
     width: 20px;
     border-radius: 20px;
   }
+
   .round {
     @extend .roundCommon;
     background-color: white;
@@ -135,6 +146,7 @@
     border: 2px solid gray;
     cursor: pointer !important;
   }
+
   .vertical-line {
     width: 3px;
     min-height: 50px;
@@ -142,6 +154,7 @@
     background: gray;
     margin: 5px auto 0px auto;
   }
+
   .no-results-message {
     position: absolute;
     width: 100%;
@@ -150,28 +163,34 @@
     font-size: 15px;
     font-weight: 400;
   }
+
   .borderRightClass {
     border-right: 1px solid #dce1e9;
   }
+
   .round1 {
     @extend .roundCommon;
     background-color: #2ecc71;
     border: 2px solid #2ecc71;
   }
+
   .highLight {
     // background: lightgray;
     border-left: 5px solid #efb577;
     // margin-left: 20px;
     // margin-top: 8px;
   }
+
   .round1V {
     width: 10px;
     height: 10px;
     border-radius: 10px;
     background-color: #48c22b;
   }
+
   table {
     width: 100%;
+
     th {
       color: white;
       background-color: #121214;
@@ -179,15 +198,18 @@
       border-right: 1px solid #e0e0e0;
       font-size: 12px;
     }
+
     td {
       padding-left: 15px;
       border-right: 1px solid #e0e0e0;
       padding: 5px;
       font-size: 12px;
     }
+
     tr {
       height: 40px;
     }
+
     .mat-input-element:disabled,
     .mat-input-element[readonly] {
       cursor: not-allowed !important;
@@ -198,22 +220,36 @@
   .boldClass {
     font-weight: bold;
   }
+
   .boldItalicClass {
     @extend .boldClass;
     font-style: italic;
   }
+
   .labelClass {
     @extend .boldClass;
     margin-top: 8px;
   }
+
   .imgClass {
     height: 20px;
   }
+
   .errorClass {
     color: red !important;
   }
+
   .cardHeader {
     background-color: #fffdf9;
     height: 50px;
+  }
+
+  .btnBg {
+    background-color: #efb577 !important;
+    color: white;
+  }
+
+  .btnOuter {
+    color: #efb577 !important;
   }
 }

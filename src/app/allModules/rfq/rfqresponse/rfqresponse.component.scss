@@ -2,9 +2,10 @@
 
 #chat {
     .center {
-        padding: 32px !important;
+        padding: 2px !important;
         max-width: 2000px;
         margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
         @include media-breakpoint-down(md) {
             padding: 0 !important;
@@ -118,6 +119,7 @@
         .sidenav-content {
             overflow: auto;
             -webkit-overflow-scrolling: touch;
+            background-color: rgb(245, 245, 245);
         }
     }
 
@@ -232,6 +234,24 @@
         font-style: italic;
     }
 
+    .semiBoldClass {
+        font-weight: 500;
+    }
+
+    .subTitle {
+        @extend .semiBoldClass;
+        font-size: 14px;
+        text-decoration: var(--textDec);
+    }
+
+    .fontSize {
+        font-size: var(--siz);
+    }
+
+    .mt-2 {
+        margin-top: 2px !important;
+    }
+
     .labelClass {
         @extend .boldClass;
         margin-top: 8px;
@@ -249,4 +269,14 @@
         background-color: #fffdf9;
         height: 50px;
     }
+
+    .grayBg {
+        background-color: gray !important;
+    }
+
+    .btnBg {
+        background-color: #efb577 !important;
+        color: white;
+    }
+    
 }

@@ -4,7 +4,7 @@
 
         .nav-link {
 
-            > span {
+            >span {
                 opacity: 0;
                 transition: opacity 200ms ease;
             }
@@ -26,17 +26,23 @@
         }
     }
 
-    > .children {
+    >.children {
         overflow: hidden;
     }
 
     &.open {
 
-        > .nav-link {
+        >.nav-link {
 
             .collapsable-arrow {
                 transform: rotate(90deg);
             }
         }
     }
+}
+
+.accent1 {
+    background-color: rgba($color: #FFFFFF, $alpha: 0.1);
+    color: #FFFFFF;
+    border-bottom: 4px solid #efb577;
 }

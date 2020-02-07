@@ -187,7 +187,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                     layout: {
                         width    : 'fullwidth',
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
+                            primaryBackground  : 'fuse-navy-900',
                             secondaryBackground: 'fuse-navy-900',
                             folded             : false,
                             hidden             : false,

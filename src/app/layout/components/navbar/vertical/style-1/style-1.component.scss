@@ -15,9 +15,9 @@ fuse-sidebar {
                         padding: 12px 0;
                         justify-content: center;
 
-                        .buttons {
-                            display: none;
-                        }
+                        // .buttons {
+                        //     display: none;
+                        // }
 
                         .logo {
 
@@ -60,7 +60,7 @@ fuse-sidebar {
                         }
 
                         .navbar-content {
-                            padding-top: 0;
+                            padding-top: 24px;
                         }
                     }
                 }
@@ -179,7 +179,7 @@ navbar {
 
             .navbar-content {
                 flex: 1 1 auto;
-                padding-top: 32px;
+                padding-top: 24px;
             }
         }
     }

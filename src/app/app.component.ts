@@ -75,12 +75,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Use a language
         this._translateService.use('en');
-        mdIconRegistry.addSvgIcon('menuIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/menu.svg'));
+        mdIconRegistry.addSvgIcon('menuIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/menu/menu.svg'));
         mdIconRegistry.addSvgIcon('botassemblyIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/botassembly.svg'));
         mdIconRegistry.addSvgIcon('transformIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/transform.svg'));
         mdIconRegistry.addSvgIcon('sourcedefinitionIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/sourcedefinition.svg'));
         mdIconRegistry.addSvgIcon('usermanagementIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/usermanagement.svg'));
         mdIconRegistry.addSvgIcon('runIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/run.svg'));
+        mdIconRegistry.addSvgIcon('dashboardIcon', sanitizer.bypassSecurityTrustResourceUrl('assets/images/menu/dashboard.svg'));
         /**
          * ------------------------------------------------------------------
          * ngxTranslate Fix Start
