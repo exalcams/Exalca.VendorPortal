@@ -176,7 +176,7 @@ export class RFQResponseComponent implements OnInit {
       const SelectedRFQItem = this.SelectedRFQWithItem.RFQItems.filter(y => y.ITEM === ItemID)[0];
       SelectedRFQItem.PRICE = x.get('PRICE').value;
       SelectedRFQItem.PER_QTY = x.get('PER_QTY').value;
-      SelectedRFQItem.RESP_DELVEIRY_DATE = this._datePipe.transform(x.get('RESP_DELVEIRY_DATE').value, 'yyyy-MM-dd');
+      SelectedRFQItem.RESP_DELVEIRY_DATE = this._datePipe.transform(x.get('RESP_DELVEIRY_DATE').value, 'dd-MM-yyyy');
       SelectedRFQItem.DELVEIRY_ADDRESS = x.get('DELVEIRY_ADDRESS').value;
 
       SelectedRFQItem.SCHEDULE = x.get('SCHEDULE').value;

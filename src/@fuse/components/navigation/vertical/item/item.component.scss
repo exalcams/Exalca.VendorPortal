@@ -4,16 +4,21 @@
 
         .nav-link {
 
-            > .nav-link-title,
-            > .nav-link-badge {
+            >.nav-link-title,
+            >.nav-link-badge {
                 opacity: 0;
                 transition: opacity 200ms ease;
             }
         }
     }
 }
-.accent1{
+
+.accent1 {
     background-color: rgba($color: #FFFFFF, $alpha: 0.1);
     color: #FFFFFF;
     border-bottom: 4px solid #efb577;
+
+    // mat-icon svg g path.cls-2 {
+    //     fill: red !important;
+    // }
 }
