@@ -17,8 +17,7 @@
     background-color: rgba($color: #FFFFFF, $alpha: 0.1);
     color: #FFFFFF;
     border-bottom: 4px solid #efb577;
-
-    // mat-icon svg g path.cls-2 {
-    //     fill: red !important;
-    // }
+    mat-icon {
+        fill: white !important;
+    }
 }

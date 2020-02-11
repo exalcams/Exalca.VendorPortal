@@ -215,10 +215,10 @@ export class LoginComponent implements OnInit {
           title: 'Dashboard',
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
-          // icon: 'dashboardIcon',
-          // isSvgIcon: true,
-          icon: 'dashboard',
-          isSvgIcon: false,
+          icon: 'dashboardIcon',
+          isSvgIcon: true,
+          // icon: 'dashboard',
+          // isSvgIcon: false,
           url: '/rfq/dashboard',
         }
       );

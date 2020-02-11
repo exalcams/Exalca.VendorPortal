@@ -191,19 +191,22 @@
   table {
     width: 100%;
 
+    .common{
+      padding: 5px;
+      font-size: 12px;
+      text-align: center;
+    }
+
     th {
+      @extend .common;
       color: white;
       background-color: #121214;
-      padding: 5px;
       border-right: 1px solid #e0e0e0;
-      font-size: 12px;
     }
 
     td {
-      padding-left: 15px;
+      @extend .common;
       border-right: 1px solid #e0e0e0;
-      padding: 5px;
-      font-size: 12px;
     }
 
     tr {
