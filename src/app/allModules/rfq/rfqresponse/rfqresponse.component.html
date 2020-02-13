@@ -201,27 +201,27 @@
                     </td>
                   </ng-container>
         
-                  <ng-container matColumnDef="DELVEIRY_DATE">
+                  <ng-container matColumnDef="DELIVERY_DATE">
                     <th mat-header-cell *matHeaderCellDef> Del. Dt </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
-                      <input matInput formControlName="DELVEIRY_DATE">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELVEIRY_DATE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELVEIRY_DATE').hasError('required')">
+                      <input matInput formControlName="DELIVERY_DATE">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELIVERY_DATE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELIVERY_DATE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
         
-                  <ng-container matColumnDef="RESP_DELVEIRY_DATE">
+                  <ng-container matColumnDef="RESPDELDATE">
                     <th mat-header-cell *matHeaderCellDef> Resp. Del. Dt </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
-                      <!-- <input matInput formControlName="RESP_DELVEIRY_DATE"> -->
-                      <input matInput [matDatepicker]="picker" formControlName="RESP_DELVEIRY_DATE"
+                      <!-- <input matInput formControlName="RESPDELDATE"> -->
+                      <input matInput [matDatepicker]="picker" formControlName="RESPDELDATE"
                         (click)="picker.open()">
                       <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
                       <mat-datepicker #picker></mat-datepicker>
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESP_DELVEIRY_DATE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESP_DELVEIRY_DATE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESPDELDATE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESPDELDATE').hasError('required')">
                         *
                       </span>
                     </td>
@@ -276,12 +276,12 @@
                     </td>
                   </ng-container>
         
-                  <ng-container matColumnDef="VENDOR_MATERIAL_NUMNER">
+                  <ng-container matColumnDef="VENDOR_MATERIAL_NUMBER">
                     <th mat-header-cell *matHeaderCellDef> Vendor Mat. No. </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
-                      <input matInput formControlName="VENDOR_MATERIAL_NUMNER">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMNER').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMNER').hasError('required')">
+                      <input matInput formControlName="VENDOR_MATERIAL_NUMBER">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMBER').touched &&
+          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMBER').hasError('required')">
                         *
                       </span>
                     </td>

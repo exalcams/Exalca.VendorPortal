@@ -1,7 +1,7 @@
 export class RFQHeader {
     RFQNUMBER: string;
     RFQTYPE: string;
-    EVALDAUTE_BY?: Date;
+    EVALUATE_BY?: Date;
     SUBMISSION_STARTS?: Date;
     SUBMISSION_CLOSE?: Date;
     PURCAHSE_PERDIOD_START?: Date;
@@ -35,12 +35,12 @@ export class RFQItem {
     PER_QTY: string;
     UOM: string;
     DATE_FORMAT: string;
-    DELVEIRY_DATE: string;
-    RESP_DELVEIRY_DATE: string;
+    DELIVERY_DATE: string;
+    RESPDELDATE: string;
     PLANT: string;
     DELVEIRY_ADDRESS: string;
     SCHEDULE?: number;
-    VENDOR_MATERIAL_NUMNER: string;
+    VENDOR_MATERIAL_NUMBER: string;
     TAX_CODE: string;
     INCO_TERM: string;
     EXPIRY_DATE: string;
@@ -57,7 +57,7 @@ export class RFQItem {
 export class RFQWithItem {
     RFQNUMBER: string;
     RFQTYPE: string;
-    EVALDAUTE_BY?: Date;
+    EVALUATE_BY?: Date;
     SUBMISSION_STARTS?: Date;
     SUBMISSION_CLOSE?: Date;
     PURCAHSE_PERDIOD_START?: Date;

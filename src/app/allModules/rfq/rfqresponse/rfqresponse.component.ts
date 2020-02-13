@@ -36,8 +36,8 @@ export class RFQResponseComponent implements OnInit {
   SelectedRFQWithItem: RFQWithItem;
   RFQResponseFormGroup: FormGroup;
   RFQResponseItemFormGroup: FormGroup;
-  RFQItemColumns: string[] = ['ITEM', 'MATERIAL', 'SHORT_TEXT', 'QTY', 'PRICE', 'PER_QTY', 'DELVEIRY_DATE',
-    'RESP_DELVEIRY_DATE', 'PLANT', 'DELVEIRY_ADDRESS', 'SCHEDULE', 'SCHEDULED_QTY', 'VENDOR_MATERIAL_NUMNER',
+  RFQItemColumns: string[] = ['ITEM', 'MATERIAL', 'SHORT_TEXT', 'QTY', 'PRICE', 'PER_QTY', 'DELIVERY_DATE',
+    'RESPDELDATE', 'PLANT', 'DELVEIRY_ADDRESS', 'SCHEDULE', 'SCHEDULED_QTY', 'VENDOR_MATERIAL_NUMBER',
     'TAX_CODE', 'INCO_TERM', 'EXPIRY_DATE', 'COUNTRY_OF_ORIGIN', 'MANUFACTURAR'
   ];
   RFQItemFormArray: FormArray = this._formBuilder.array([]);
@@ -136,13 +136,13 @@ export class RFQResponseComponent implements OnInit {
       QTY: [adpterItem.QTY, Validators.required],
       PRICE: [adpterItem.PRICE, Validators.required],
       PER_QTY: [adpterItem.PER_QTY, Validators.required],
-      DELVEIRY_DATE: [adpterItem.DELVEIRY_DATE, Validators.required],
-      RESP_DELVEIRY_DATE: [adpterItem.RESP_DELVEIRY_DATE, Validators.required],
+      DELIVERY_DATE: [adpterItem.DELIVERY_DATE, Validators.required],
+      RESPDELDATE: [adpterItem.RESPDELDATE, Validators.required],
       PLANT: [adpterItem.PLANT, Validators.required],
       DELVEIRY_ADDRESS: [adpterItem.DELVEIRY_ADDRESS, Validators.required],
       SCHEDULE: [adpterItem.SCHEDULE, Validators.required],
       SCHEDULED_QTY: [adpterItem.SCHEDULED_QTY, Validators.required],
-      VENDOR_MATERIAL_NUMNER: [adpterItem.VENDOR_MATERIAL_NUMNER, Validators.required],
+      VENDOR_MATERIAL_NUMBER: [adpterItem.VENDOR_MATERIAL_NUMBER, Validators.required],
       TAX_CODE: [adpterItem.TAX_CODE, Validators.required],
       INCO_TERM: [adpterItem.INCO_TERM, Validators.required],
       EXPIRY_DATE: [adpterItem.EXPIRY_DATE, Validators.required],
@@ -153,7 +153,7 @@ export class RFQResponseComponent implements OnInit {
     row.get('MATERIAL').disable();
     row.get('SHORT_TEXT').disable();
     row.get('QTY').disable();
-    row.get('DELVEIRY_DATE').disable();
+    row.get('DELIVERY_DATE').disable();
     row.get('PLANT').disable();
     this.RFQItemFormArray.push(row);
     this.RFQItemDataSource.next(this.RFQItemFormArray.controls);
@@ -176,16 +176,16 @@ export class RFQResponseComponent implements OnInit {
       const SelectedRFQItem = this.SelectedRFQWithItem.RFQItems.filter(y => y.ITEM === ItemID)[0];
       SelectedRFQItem.PRICE = x.get('PRICE').value;
       SelectedRFQItem.PER_QTY = x.get('PER_QTY').value;
-      SelectedRFQItem.RESP_DELVEIRY_DATE = this._datePipe.transform(x.get('RESP_DELVEIRY_DATE').value, 'dd-MM-yyyy');
+      SelectedRFQItem.RESPDELDATE = this._datePipe.transform(x.get('RESPDELDATE').value, 'dd.MM.yyyy');
       SelectedRFQItem.DELVEIRY_ADDRESS = x.get('DELVEIRY_ADDRESS').value;
 
       SelectedRFQItem.SCHEDULE = x.get('SCHEDULE').value;
       SelectedRFQItem.SCHEDULED_QTY = x.get('SCHEDULED_QTY').value;
-      SelectedRFQItem.VENDOR_MATERIAL_NUMNER = x.get('VENDOR_MATERIAL_NUMNER').value;
+      SelectedRFQItem.VENDOR_MATERIAL_NUMBER = x.get('VENDOR_MATERIAL_NUMBER').value;
       SelectedRFQItem.TAX_CODE = x.get('TAX_CODE').value;
 
       SelectedRFQItem.INCO_TERM = x.get('INCO_TERM').value;
-      SelectedRFQItem.EXPIRY_DATE = this._datePipe.transform(x.get('EXPIRY_DATE').value, 'yyyy-MM-dd');
+      SelectedRFQItem.EXPIRY_DATE = this._datePipe.transform(x.get('EXPIRY_DATE').value, 'dd.MM.yyyy');
       SelectedRFQItem.COUNTRY_OF_ORIGIN = x.get('COUNTRY_OF_ORIGIN').value;
       SelectedRFQItem.MANUFACTURAR = x.get('MANUFACTURAR').value;
     });
