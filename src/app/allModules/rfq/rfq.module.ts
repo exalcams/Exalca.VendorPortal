@@ -48,6 +48,9 @@ import { FormsModule } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { RFQDashboardComponent } from './rfqdashboard/rfqdashboard.component';
 import { RFQResponseComponent } from './rfqresponse/rfqresponse.component';
+import { SharedModule } from 'app/shared/shared-module';
+import { RFQLineItemScheduleLineDialogComponent } from './rfqline-item-schedule-line-dialog/rfqline-item-schedule-line-dialog.component';
+import { DecimalPipe } from '@angular/common';
 
 const routes = [
     {
@@ -117,10 +120,12 @@ const routes = [
         FuseWidgetModule,
 
         FormsModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+
+        SharedModule
     ],
-    declarations: [RFQDashboardComponent, RFQResponseComponent],
-    providers: [],
-    entryComponents: []
+    declarations: [RFQDashboardComponent, RFQResponseComponent, RFQLineItemScheduleLineDialogComponent],
+    providers: [DecimalPipe],
+    entryComponents: [RFQLineItemScheduleLineDialogComponent]
 })
 export class RFQModule { }

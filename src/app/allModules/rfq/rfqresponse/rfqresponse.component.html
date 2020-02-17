@@ -115,242 +115,400 @@
       <div class="borderRight1"></div>
       <div fxFlex="75" class="side-bar">
         <mat-card class="cardHeader p-8">
-          <div fxLayout fxFlex fxLayoutAlign="center" class="h2">
-            <b>RFQ Item</b>
+          <div fxLayout>
+            <div fxFlex fxLayoutAlign="center" class="h2">
+              <b>RFQ Item</b>
+            </div>
+            <div fxFlex fxLayoutAlign="end">
+              <button mat-raised-button class="btnBg" (click)="RespondRFQ()">Respond</button>
+              <button *ngIf="(this.SelectedRFQWithItem?.STATUS | lowercase)!=='open'" mat-stroked-button
+                class="btnOuter ml-4" (click)="ReleaseRFQ()">Release</button>
+            </div>
           </div>
         </mat-card>
         <div class="sidenav-content">
           <form autocomplete="off" name="form" [formGroup]="RFQResponseItemFormGroup" novalidate>
-            <mat-card class="my-4 p-8">
+            <mat-card class="m-0 p-0">
               <div fxLayout="row" class="borderTop mt-4"></div>
-              <div style="overflow-x:auto;">
+              <div formArrayName="RFQItems"
+                *ngFor="let ite of RFQResponseItemFormGroup.get('RFQItems')['controls']; let i = index">
+                <div [formGroupName]="i">
+                  <mat-card fxLayout class="p-4 m-4">
+                    <div fxFlex="95" class="p-4">
+                      <div fxLayout="column">
+                        <div fxFlex fxLayout>
+                          <div fxFlex fxLayoutAlign="start center">
+                            <span class="boldClass mx-4">Item :</span>
+                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('ITEM')?.value | removeLeadingZero}}
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="QTY" placeholder="Quantity">
+                              <mat-error class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('QTY').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('QTY').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="PRICE" placeholder="Price">
+                              <mat-error class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PRICE').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PRICE').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="PER_QTY" placeholder="Per. Qty" pattern="^[1-9]\d*$">
+                              <mat-error class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PER_QTY').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PER_QTY').hasError('required')">
+                                *
+                              </mat-error>
+                              <mat-error class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PER_QTY').touched &&
+              !RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PER_QTY').hasError('required') &&
+              RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('PER_QTY').hasError('pattern')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxFlex fxLayout>
+                          <div fxFlex fxLayoutAlign="start center">
+                            <span class="boldClass mx-4">Material :</span>
+                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('MATERIAL')?.value | removeLeadingZero}}
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="DELVEIRY_ADDRESS" placeholder="Delivery address">
+                              <mat-error class="pl-4 errorClass"
+                                *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('DELVEIRY_ADDRESS').touched &&
+                          RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('DELVEIRY_ADDRESS').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="VENDOR_MATERIAL_NUMBER" placeholder="Vendor Mat. No.">
+                              <mat-error class="pl-4 errorClass"
+                                *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('VENDOR_MATERIAL_NUMBER').touched &&
+                          RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('VENDOR_MATERIAL_NUMBER').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="TAX_CODE" placeholder="Tax code">
+                              <mat-error class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('TAX_CODE').touched &&
+                          RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('TAX_CODE').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxFlex fxLayout>
+                          <div fxFlex fxLayoutAlign="start center">
+                            <span class="boldClass mx-4">
+                              {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('SHORT_TEXT')?.value}}
+                            </span>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="INCO_TERM" placeholder="Inco terms">
+                              <mat-error class="pl-4 errorClass"
+                                *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('INCO_TERM').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('INCO_TERM').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput [matDatepicker]="picker1" formControlName="EXPIRY_DATE"
+                                placeholder="Expiry date" (keydown)="onKeydown($event)">
+                              <mat-datepicker #picker1></mat-datepicker>
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-error class="pl-4 errorClass"
+                                *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('EXPIRY_DATE').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('EXPIRY_DATE').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex>
+                            <div fxFlex>
+                              <mat-form-field class="pl-8" fxFlex>
+                                <input matInput formControlName="COUNTRY_OF_ORIGIN" placeholder="Country of origin">
+                                <mat-error class="pl-4 errorClass"
+                                  *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('COUNTRY_OF_ORIGIN').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('COUNTRY_OF_ORIGIN').hasError('required')">
+                                  *
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxFlex fxLayout>
+                          <div fxFlex fxLayoutAlign="start center">
+                            <span class="boldClass mx-4">Plant :</span>
+                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('PLANT')?.value | removeLeadingZero}}
+                          </div>
+                          <div fxFlex>
+                            <mat-form-field class="pl-8" fxFlex>
+                              <input matInput formControlName="MANUFACTURAR" placeholder="Manufacturar">
+                              <mat-error class="pl-4 errorClass"
+                                *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('MANUFACTURAR').touched &&
+                            RFQResponseItemFormGroup.get('RFQItems')['controls'][i].get('MANUFACTURAR').hasError('required')">
+                                *
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div fxFlex></div>
+                          <div fxFlex></div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div fxFlex="2" class="borderLeft">
+
+                    </div>
+                    <div fxFlex="3" fxLayout fxLayoutAlign="center center">
+                      <div fxFlex>
+                        <mat-icon class="matIconStyle"
+                          (click)="GetRFQLineItemSchedulesByItem(RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('ITEM')?.value)">
+                          play_arrow</mat-icon>
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+              </div>
+              <!-- <div style="overflow-x:auto;">
                 <table *ngIf="RFQItemDataSource?.value?.length" mat-table [dataSource]="RFQItemDataSource"
                   class="mat-elevation-z8" formArrayName="RFQItems">
                   <tr mat-header-row *matHeaderRowDef="RFQItemColumns;">
                   </tr>
                   <tr mat-row *matRowDef="let row;let i = index; columns: RFQItemColumns;"></tr>
-        
+
                   <ng-container matColumnDef="ITEM">
                     <th mat-header-cell *matHeaderCellDef> Item </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="ITEM">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('ITEM').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('ITEM').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('ITEM').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('ITEM').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="MATERIAL">
                     <th mat-header-cell *matHeaderCellDef> Material </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="MATERIAL">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('MATERIAL').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('MATERIAL').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('MATERIAL').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('MATERIAL').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="SHORT_TEXT">
                     <th mat-header-cell *matHeaderCellDef> Short text </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="SHORT_TEXT">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SHORT_TEXT').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SHORT_TEXT').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SHORT_TEXT').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SHORT_TEXT').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="QTY">
                     <th mat-header-cell *matHeaderCellDef> Qty </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="QTY">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('QTY').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('QTY').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('QTY').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('QTY').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="PRICE">
                     <th mat-header-cell *matHeaderCellDef> Price </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="PRICE">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PRICE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PRICE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PRICE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PRICE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="PER_QTY">
                     <th mat-header-cell *matHeaderCellDef> Per Qty </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="PER_QTY" pattern="^[1-9]\d*$">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PER_QTY').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PER_QTY').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PER_QTY').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PER_QTY').hasError('required')">
                         *
                       </span>
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PER_QTY').touched &&
-          !RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PER_QTY').hasError('required') &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PER_QTY').hasError('pattern')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PER_QTY').touched &&
+          !RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PER_QTY').hasError('required') &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PER_QTY').hasError('pattern')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="DELIVERY_DATE">
                     <th mat-header-cell *matHeaderCellDef> Del. Dt </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="DELIVERY_DATE">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELIVERY_DATE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELIVERY_DATE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('DELIVERY_DATE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('DELIVERY_DATE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="RESPDELDATE">
                     <th mat-header-cell *matHeaderCellDef> Resp. Del. Dt </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
-                      <!-- <input matInput formControlName="RESPDELDATE"> -->
-                      <input matInput [matDatepicker]="picker" formControlName="RESPDELDATE"
-                        (click)="picker.open()">
-                      <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                      <input matInput [matDatepicker]="picker" formControlName="RESPDELDATE" (click)="picker.open()">
                       <mat-datepicker #picker></mat-datepicker>
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESPDELDATE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('RESPDELDATE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('RESPDELDATE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('RESPDELDATE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="PLANT">
                     <th mat-header-cell *matHeaderCellDef> Plant </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="PLANT">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PLANT').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('PLANT').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PLANT').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('PLANT').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="DELVEIRY_ADDRESS">
                     <th mat-header-cell *matHeaderCellDef> Del. Addr </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="DELVEIRY_ADDRESS">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELVEIRY_ADDRESS').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('DELVEIRY_ADDRESS').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('DELVEIRY_ADDRESS').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('DELVEIRY_ADDRESS').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="SCHEDULE">
                     <th mat-header-cell *matHeaderCellDef> Schedule </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="SCHEDULE" pattern="^[1-9]\d*$">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULE').hasError('required')">
                         *
                       </span>
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULE').touched &&
-          !RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULE').hasError('required') && 
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULE').hasError('pattern')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULE').touched &&
+          !RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULE').hasError('required') && 
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULE').hasError('pattern')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="SCHEDULED_QTY">
                     <th mat-header-cell *matHeaderCellDef> Schduled Qty </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="SCHEDULED_QTY">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULED_QTY').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('SCHEDULED_QTY').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULED_QTY').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('SCHEDULED_QTY').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="VENDOR_MATERIAL_NUMBER">
                     <th mat-header-cell *matHeaderCellDef> Vendor Mat. No. </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="VENDOR_MATERIAL_NUMBER">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMBER').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('VENDOR_MATERIAL_NUMBER').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('VENDOR_MATERIAL_NUMBER').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('VENDOR_MATERIAL_NUMBER').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="TAX_CODE">
                     <th mat-header-cell *matHeaderCellDef> Tax Code </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="TAX_CODE">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('TAX_CODE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('TAX_CODE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('TAX_CODE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('TAX_CODE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="INCO_TERM">
                     <th mat-header-cell *matHeaderCellDef> Inco term </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="INCO_TERM">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('INCO_TERM').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('INCO_TERM').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('INCO_TERM').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('INCO_TERM').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="EXPIRY_DATE">
                     <th mat-header-cell *matHeaderCellDef> Exp. Dt </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput [matDatepicker]="picker1" formControlName="EXPIRY_DATE" (click)="picker1.open()">
-                      <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
                       <mat-datepicker #picker1></mat-datepicker>
-                      <!-- <input matInput formControlName="EXPIRY_DATE"> -->
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('EXPIRY_DATE').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('EXPIRY_DATE').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('EXPIRY_DATE').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('EXPIRY_DATE').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="COUNTRY_OF_ORIGIN">
                     <th mat-header-cell *matHeaderCellDef> Country of Org </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
                       <input matInput formControlName="COUNTRY_OF_ORIGIN">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('COUNTRY_OF_ORIGIN').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('COUNTRY_OF_ORIGIN').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('COUNTRY_OF_ORIGIN').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('COUNTRY_OF_ORIGIN').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
-        
+
                   <ng-container matColumnDef="MANUFACTURAR">
                     <th mat-header-cell *matHeaderCellDef> Manufacturar </th>
                     <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index" class="pl-8">
                       <input matInput formControlName="MANUFACTURAR">
-                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems').controls[index].get('MANUFACTURAR').touched &&
-          RFQResponseItemFormGroup.get('RFQItems').controls[index].get('MANUFACTURAR').hasError('required')">
+                      <span class="pl-4 errorClass" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('MANUFACTURAR').touched &&
+          RFQResponseItemFormGroup.get('RFQItems')['controls'][index].get('MANUFACTURAR').hasError('required')">
                         *
                       </span>
                     </td>
                   </ng-container>
                 </table>
-              </div>
-              <div fxLayout class="mt-8">
+              </div> -->
+              <!-- <div fxLayout class="mt-8">
                 <div fxFlex fxLayoutAlign="end">
                   <button mat-raised-button class="btnBg" (click)="SubmitClicked()">Submit</button>
                 </div>
-              </div>
+              </div> -->
             </mat-card>
           </form>
         </div>

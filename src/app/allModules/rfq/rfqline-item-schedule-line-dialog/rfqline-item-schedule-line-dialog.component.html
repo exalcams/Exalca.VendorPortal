@@ -1,0 +1,32 @@
+<div class="dialog-content-wrapper normal">
+  <mat-toolbar class="m-0 headBg">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Schedule Line(s)</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-4 m-0" fusePerfectScrollbar>
+    <div fxLayout="column" *ngFor="let sch of data">
+      <mat-card fxLayout="column" class="m-4 p-0">
+        <div fxFlex fxLayout class="m-4 p-4">
+          <div fxFlex><span class="boldClass">Schedule Line : </span>{{sch.SCHEDULE_LINE}}</div>
+          <div fxFlex><span class="boldClass">Schedule Qty :</span> {{sch.SCHEDULED_QTY}} </div>
+        </div>
+        <div fxFlex fxLayout class="m-4 p-4">
+          <div fxFlex><span class="boldClass">Delivery Date : </span>{{sch.DELIVERY_DATE | date :'dd/MM/yyyy'}}</div>
+          <div fxFlex><span class="boldClass">Start Date : </span>{{sch.START_DATE | date :'dd/MM/yyyy'}} </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="end">
+    <div fxFlex align="end">
+      <button mat-stroked-button class="btnOuter" (click)="CloseClicked()">Close</button>
+    </div>
+    <!-- <button mat-button type="button" color="accent" (click)="YesClicked()">Yes</button> -->
+  </mat-dialog-actions>
+</div>

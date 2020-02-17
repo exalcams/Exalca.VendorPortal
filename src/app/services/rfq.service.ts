@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
-import { RFQWithItem, RFQHeader } from 'app/models/rfq.module';
+import { RFQWithItem, RFQHeader, RFQWithLineItem, RFQLineItemSchedule } from 'app/models/rfq.module';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class RFQService {
     return throwError(error.error || error.message || 'Server Error');
   }
 
-  UpdateRFQ(rFQWithItem: RFQWithItem): Observable<any> {
+  UpdateRFQ(rFQWithItem: RFQWithLineItem): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}api/RFQ/UpdateRFQ`,
       rFQWithItem,
       {
@@ -30,14 +30,8 @@ export class RFQService {
       .pipe(catchError(this.errorHandler));
   }
 
-  UpdateRFQStatus(rfq: RFQHeader): Observable<any> {
-    return this._httpClient.post<any>(`${this.baseAddress}api/RFQ/UpdateRFQStatus`,
-      rfq,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      })
+  UpdateRFQStatus(RFQNUMBER: string, STATUS: string): Observable<any> {
+    return this._httpClient.get<any>(`${this.baseAddress}api/RFQ/UpdateRFQStatus?RFQNUMBER=${RFQNUMBER}&STATUS=${STATUS}`)
       .pipe(catchError(this.errorHandler));
   }
 
@@ -46,8 +40,13 @@ export class RFQService {
       .pipe(catchError(this.errorHandler));
   }
 
-  GetRFQByRFQNumber(RFQNUMBER: string): Observable<RFQWithItem | string> {
-    return this._httpClient.get<RFQWithItem>(`${this.baseAddress}api/RFQ/GetRFQByRFQNumber?RFQNUMBER=${RFQNUMBER}`)
+  GetRFQByRFQNumber(RFQNUMBER: string): Observable<RFQWithLineItem | string> {
+    return this._httpClient.get<RFQWithLineItem>(`${this.baseAddress}api/RFQ/GetRFQByRFQNumber?RFQNUMBER=${RFQNUMBER}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetRFQLineItemSchedulesByItem(RFQNUMBER: string, ITEM: string): Observable<RFQLineItemSchedule[] | string> {
+    return this._httpClient.get<RFQLineItemSchedule[]>(`${this.baseAddress}api/RFQ/GetRFQLineItemSchedulesByItem?RFQNUMBER=${RFQNUMBER}&ITEM=${ITEM}`)
       .pipe(catchError(this.errorHandler));
   }
 

@@ -35,7 +35,7 @@ export class RFQDashboardComponent implements OnInit {
   SelectedRFQ: RFQHeader;
   RFQs: RFQHeader[] = [];
   BGClassName: any;
-  RFQColumns: string[] = ['Select', 'RFQNUMBER', 'RFQTYPE', 'CURRENCY', 'SUBMISSION_STARTS', 'SUBMISSION_CLOSE',
+  RFQColumns: string[] = ['RFQNUMBER', 'RFQTYPE', 'CURRENCY', 'SUBMISSION_STARTS', 'SUBMISSION_CLOSE',
     'PURCAHSE_PERDIOD_START', 'PURCAHSE_PERDIOD_END', 'STATUS', 'Action'];
   RFQDataSource: MatTableDataSource<RFQHeader>;
   selection = new SelectionModel<RFQHeader>(true, []);
@@ -124,64 +124,15 @@ export class RFQDashboardComponent implements OnInit {
     }
   }
 
-  RespondRFQ(): void {
-    if (this.SelectedRFQ.STATUS.toLowerCase() === 'released') {
-      this.notificationSnackBarComponent.openSnackBar('RFQ has already been realeased', SnackBarStatus.danger);
-    } else {
-      this._shareParameterService.SetRFQ(this.SelectedRFQ);
-      this._router.navigate(['/rfq/response']);
-    }
+  RespondRFQ(rfq: RFQHeader): void {
+    this.SelectedRFQ = rfq;
+    // if (this.SelectedRFQ.STATUS.toLowerCase() === 'released') {
+    //   this.notificationSnackBarComponent.openSnackBar('RFQ has already been realeased', SnackBarStatus.danger);
+    // } else {
+    //   this._shareParameterService.SetRFQ(this.SelectedRFQ);
+    //   this._router.navigate(['/rfq/response']);
+    // }
+    this._shareParameterService.SetRFQ(this.SelectedRFQ);
+    this._router.navigate(['/rfq/response']);
   }
-
-  ReleaseRFQ(rfq: RFQHeader): void {
-    if (rfq) {
-      if (rfq.STATUS.toLowerCase() === 'open') {
-        this.notificationSnackBarComponent.openSnackBar('Please respond the RFQ and then release', SnackBarStatus.danger);
-      } else if (rfq.STATUS.toLowerCase() === 'released') {
-        this.notificationSnackBarComponent.openSnackBar('RFQ has already been released', SnackBarStatus.danger);
-      }
-      else {
-        const Actiontype = 'Release';
-        const Catagory = 'RFQ';
-        this.OpenConfirmationDialog(Actiontype, Catagory, rfq);
-      }
-    }
-  }
-
-  OpenConfirmationDialog(Actiontype: string, Catagory: string, rfq?: RFQHeader): void {
-    const dialogConfig: MatDialogConfig = {
-      data: {
-        Actiontype: Actiontype,
-        Catagory: Catagory
-      },
-    };
-    const dialogRef = this.dialog.open(NotificationDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if (result) {
-          this.UpdateRFQStatus(rfq);
-        }
-      });
-  }
-
-  UpdateRFQStatus(rfq: RFQHeader): void {
-    rfq.STATUS = 'Released';
-    this.IsProgressBarVisibile = true;
-    this._rfqService.UpdateRFQStatus(rfq).subscribe(
-      (data) => {
-        this.IsProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
-        this.GetRFQByVendor();
-      },
-      (err) => {
-        console.error(err);
-        this.IsProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-      }
-    );
-  }
-
-
-
-
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { RFQHeader, RFQWithItem, RFQItem } from 'app/models/rfq.module';
+import { RFQHeader, RFQWithItem, RFQItem, RFQWithLineItem, RFQLineItem, RFQLineItemSchedule } from 'app/models/rfq.module';
 import { Router } from '@angular/router';
 import { MatIconRegistry, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -12,11 +12,12 @@ import { TransformService } from 'app/services/Transform.service';
 import { AdapterService } from 'app/services/adapter.service';
 import { RFQService } from 'app/services/rfq.service';
 import { ShareParameterServiceService } from 'app/services/share-parameter-service.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { fuseAnimations } from '@fuse/animations';
+import { RFQLineItemScheduleLineDialogComponent } from '../rfqline-item-schedule-line-dialog/rfqline-item-schedule-line-dialog.component';
 
 @Component({
   selector: 'app-rfqresponse',
@@ -33,7 +34,7 @@ export class RFQResponseComponent implements OnInit {
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
   SelectedRFQ: RFQHeader;
-  SelectedRFQWithItem: RFQWithItem;
+  SelectedRFQWithItem: RFQWithLineItem;
   RFQResponseFormGroup: FormGroup;
   RFQResponseItemFormGroup: FormGroup;
   RFQItemColumns: string[] = ['ITEM', 'MATERIAL', 'SHORT_TEXT', 'QTY', 'PRICE', 'PER_QTY', 'DELIVERY_DATE',
@@ -41,7 +42,7 @@ export class RFQResponseComponent implements OnInit {
     'TAX_CODE', 'INCO_TERM', 'EXPIRY_DATE', 'COUNTRY_OF_ORIGIN', 'MANUFACTURAR'
   ];
   RFQItemFormArray: FormArray = this._formBuilder.array([]);
-  RFQItemDataSource = new BehaviorSubject<AbstractControl[]>([]);
+  // RFQItemDataSource = new BehaviorSubject<AbstractControl[]>([]);
   constructor(
     private _router: Router,
     matIconRegistry: MatIconRegistry,
@@ -54,7 +55,8 @@ export class RFQResponseComponent implements OnInit {
     private _rfqService: RFQService,
     private _shareParameterService: ShareParameterServiceService,
     private dialog: MatDialog,
-    private _datePipe: DatePipe
+    private _datePipe: DatePipe,
+    private _decimalPipe: DecimalPipe
   ) {
     this.SelectedRFQ = this._shareParameterService.GetRFQ();
     if (this.SelectedRFQ) {
@@ -96,12 +98,31 @@ export class RFQResponseComponent implements OnInit {
     this.GetRFQByRFQNumber();
   }
 
+  ResetControl(): void {
+    this.SelectedRFQWithItem.RFQItems = [];
+    this.SelectedRFQWithItem = new RFQWithLineItem();
+    this.RFQResponseFormGroup.reset();
+    Object.keys(this.RFQResponseFormGroup.controls).forEach(key => {
+      this.RFQResponseFormGroup.get(key).markAsUntouched();
+    });
+    this.ResetRFQItems();
+  }
+  ResetRFQItems(): void {
+    this.ClearFormArray(this.RFQItemFormArray);
+    // this.RFQItemDataSource.next(this.RFQItemFormArray.controls);
+  }
+  ClearFormArray = (formArray: FormArray) => {
+    while (formArray.length !== 0) {
+      formArray.removeAt(0);
+    }
+  }
+
   GetRFQByRFQNumber(): void {
     this.IsProgressBarVisibile = true;
     this._rfqService.GetRFQByRFQNumber(this.SelectedRFQ.RFQNUMBER).subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
-        this.SelectedRFQWithItem = data as RFQWithItem;
+        this.SelectedRFQWithItem = data as RFQWithLineItem;
         if (this.SelectedRFQWithItem) {
           this.SetRFQHeaderValues();
           if (this.SelectedRFQWithItem.RFQItems && this.SelectedRFQWithItem.RFQItems.length) {
@@ -128,20 +149,29 @@ export class RFQResponseComponent implements OnInit {
     this.RFQResponseFormGroup.get('LONG_TEXT_TABLE').patchValue(this.SelectedRFQWithItem.LONG_TEXT_TABLE);
   }
 
-  SetRFQItemValues(adpterItem: RFQItem): void {
+  SetRFQItemValues(adpterItem: RFQLineItem): void {
+    let PRICEVal = adpterItem.PRICE.toString();
+    if (adpterItem.PRICE) {
+      PRICEVal = this._decimalPipe.transform(adpterItem.PRICE, '1.2-2');
+    }
+    let QTYVal = adpterItem.QTY.toString();
+    if (adpterItem.QTY) {
+      QTYVal = this._decimalPipe.transform(adpterItem.QTY, '1.2-2');
+    }
     const row = this._formBuilder.group({
       ITEM: [adpterItem.ITEM, Validators.required],
       MATERIAL: [adpterItem.MATERIAL, Validators.required],
       SHORT_TEXT: [adpterItem.SHORT_TEXT, Validators.required],
-      QTY: [adpterItem.QTY, Validators.required],
-      PRICE: [adpterItem.PRICE, Validators.required],
+      QTY: [QTYVal, Validators.required],
+      PRICE: [PRICEVal, Validators.required],
       PER_QTY: [adpterItem.PER_QTY, Validators.required],
-      DELIVERY_DATE: [adpterItem.DELIVERY_DATE, Validators.required],
-      RESPDELDATE: [adpterItem.RESPDELDATE, Validators.required],
       PLANT: [adpterItem.PLANT, Validators.required],
       DELVEIRY_ADDRESS: [adpterItem.DELVEIRY_ADDRESS, Validators.required],
-      SCHEDULE: [adpterItem.SCHEDULE, Validators.required],
-      SCHEDULED_QTY: [adpterItem.SCHEDULED_QTY, Validators.required],
+      // SCHEDULE_LINE: [adpterItem.SCHEDULE_LINE, Validators.required],
+      // DELIVERY_DATE: [adpterItem.DELIVERY_DATE, Validators.required],
+      // START_DATE: [adpterItem.START_DATE, Validators.required],
+      // SCHEDULED_QTY: [adpterItem.SCHEDULED_QTY, Validators.required],
+      // RESPDELDATE: [adpterItem.RESPDELDATE, Validators.required],
       VENDOR_MATERIAL_NUMBER: [adpterItem.VENDOR_MATERIAL_NUMBER, Validators.required],
       TAX_CODE: [adpterItem.TAX_CODE, Validators.required],
       INCO_TERM: [adpterItem.INCO_TERM, Validators.required],
@@ -153,10 +183,10 @@ export class RFQResponseComponent implements OnInit {
     row.get('MATERIAL').disable();
     row.get('SHORT_TEXT').disable();
     row.get('QTY').disable();
-    row.get('DELIVERY_DATE').disable();
+    // row.get('DELIVERY_DATE').disable();
     row.get('PLANT').disable();
     this.RFQItemFormArray.push(row);
-    this.RFQItemDataSource.next(this.RFQItemFormArray.controls);
+    // this.RFQItemDataSource.next(this.RFQItemFormArray.controls);
   }
 
   GetHeaderValues(): void {
@@ -176,27 +206,36 @@ export class RFQResponseComponent implements OnInit {
       const SelectedRFQItem = this.SelectedRFQWithItem.RFQItems.filter(y => y.ITEM === ItemID)[0];
       SelectedRFQItem.PRICE = x.get('PRICE').value;
       SelectedRFQItem.PER_QTY = x.get('PER_QTY').value;
-      SelectedRFQItem.RESPDELDATE = this._datePipe.transform(x.get('RESPDELDATE').value, 'dd.MM.yyyy');
       SelectedRFQItem.DELVEIRY_ADDRESS = x.get('DELVEIRY_ADDRESS').value;
 
-      SelectedRFQItem.SCHEDULE = x.get('SCHEDULE').value;
-      SelectedRFQItem.SCHEDULED_QTY = x.get('SCHEDULED_QTY').value;
+      // SelectedRFQItem.SCHEDULE_LINE = x.get('SCHEDULE_LINE').value;
+      // SelectedRFQItem.DELIVERY_DATE = x.get('DELIVERY_DATE').value;
+      // SelectedRFQItem.START_DATE = x.get('START_DATE').value;
+      // SelectedRFQItem.SCHEDULE_LINE = x.get('SCHEDULE_LINE').value;
+      // SelectedRFQItem.SCHEDULED_QTY = x.get('SCHEDULED_QTY').value;
+      // SelectedRFQItem.RESPDELDATE = this._datePipe.transform(x.get('RESPDELDATE').value, 'yyyy-MM-dd');
+
       SelectedRFQItem.VENDOR_MATERIAL_NUMBER = x.get('VENDOR_MATERIAL_NUMBER').value;
       SelectedRFQItem.TAX_CODE = x.get('TAX_CODE').value;
-
       SelectedRFQItem.INCO_TERM = x.get('INCO_TERM').value;
-      SelectedRFQItem.EXPIRY_DATE = this._datePipe.transform(x.get('EXPIRY_DATE').value, 'dd.MM.yyyy');
+      SelectedRFQItem.EXPIRY_DATE = this._datePipe.transform(x.get('EXPIRY_DATE').value, 'yyyy-MM-dd');
       SelectedRFQItem.COUNTRY_OF_ORIGIN = x.get('COUNTRY_OF_ORIGIN').value;
       SelectedRFQItem.MANUFACTURAR = x.get('MANUFACTURAR').value;
     });
   }
 
-  SubmitClicked(): void {
+  RespondRFQ(): void {
     if (this.RFQResponseFormGroup.valid) {
       if (this.RFQResponseItemFormGroup.valid) {
-        const Actiontype = 'Respond';
-        const Catagory = 'RFQ';
-        this.OpenConfirmationDialog(Actiontype, Catagory);
+        this.GetHeaderValues();
+        this.GetRFQItemValues();
+        if (this.SelectedRFQWithItem.STATUS.toLowerCase() === 'released') {
+          this.notificationSnackBarComponent.openSnackBar('RFQ has already been released', SnackBarStatus.danger);
+        } else {
+          const Actiontype = 'Respond';
+          const Catagory = 'RFQ';
+          this.OpenConfirmationDialog(Actiontype, Catagory);
+        }
       } else {
         this.ShowValidationErrors(this.RFQResponseItemFormGroup);
       }
@@ -215,21 +254,25 @@ export class RFQResponseComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          this.UpdateRFQ();
+          if (Actiontype.toLowerCase() === 'respond') {
+            this.UpdateRFQ();
+          } else {
+            this.UpdateRFQStatus();
+          }
         }
       });
   }
 
   UpdateRFQ(): void {
-    this.GetHeaderValues();
-    this.GetRFQItemValues();
     this.SelectedRFQWithItem.STATUS = 'Responded';
     this.IsProgressBarVisibile = true;
     this._rfqService.UpdateRFQ(this.SelectedRFQWithItem).subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar('RFQ responded successfully', SnackBarStatus.success);
-        this._router.navigate(['/rfq/dashboard']);
+        this.ResetControl();
+        this.GetRFQByRFQNumber();
+        // this._router.navigate(['/rfq/dashboard']);
       },
       (err) => {
         console.error(err);
@@ -266,4 +309,100 @@ export class RFQResponseComponent implements OnInit {
       }
     });
   }
+
+  ReleaseRFQ(): void {
+    if (this.RFQResponseFormGroup.valid) {
+      if (this.RFQResponseItemFormGroup.valid) {
+        this.GetHeaderValues();
+        this.GetRFQItemValues();
+        if (this.SelectedRFQWithItem.STATUS.toLowerCase() === 'open') {
+          this.notificationSnackBarComponent.openSnackBar('Please respond the RFQ and then release', SnackBarStatus.danger);
+        } else if (this.SelectedRFQWithItem.STATUS.toLowerCase() === 'released') {
+          this.notificationSnackBarComponent.openSnackBar('RFQ has already been released', SnackBarStatus.danger);
+        }
+        else {
+          const Actiontype = 'Release';
+          const Catagory = 'RFQ';
+          this.OpenConfirmationDialog(Actiontype, Catagory);
+        }
+      } else {
+        this.ShowValidationErrors(this.RFQResponseItemFormGroup);
+      }
+    } else {
+      this.ShowValidationErrors(this.RFQResponseFormGroup);
+    }
+  }
+
+  // OpenConfirmationDialog(Actiontype: string, Catagory: string, rfq?: RFQHeader): void {
+  //   const dialogConfig: MatDialogConfig = {
+  //     data: {
+  //       Actiontype: Actiontype,
+  //       Catagory: Catagory
+  //     },
+  //   };
+  //   const dialogRef = this.dialog.open(NotificationDialogComponent, dialogConfig);
+  //   dialogRef.afterClosed().subscribe(
+  //     result => {
+  //       if (result) {
+  //         this.UpdateRFQStatus(rfq);
+  //       }
+  //     });
+  // }
+
+  UpdateRFQStatus(): void {
+    this.IsProgressBarVisibile = true;
+    this._rfqService.UpdateRFQStatus(this.SelectedRFQWithItem.RFQNUMBER, 'Released').subscribe(
+      (data) => {
+        this.IsProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar('RFQ released successfully', SnackBarStatus.success);
+        this.ResetControl();
+        this.GetRFQByRFQNumber();
+      },
+      (err) => {
+        console.error(err);
+        this.IsProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+      }
+    );
+  }
+  GetRFQLineItemSchedulesByItem(ITEM: string): void {
+    this.IsProgressBarVisibile = true;
+    this._rfqService.GetRFQLineItemSchedulesByItem(this.SelectedRFQ.RFQNUMBER, ITEM).subscribe(
+      (data) => {
+        this.IsProgressBarVisibile = false;
+        const schedules = data as RFQLineItemSchedule[];
+        if (schedules) {
+          this.RFQLineItemSchedulesDialog(schedules);
+        }
+        // console.log(data);
+      },
+      (err) => {
+        this.IsProgressBarVisibile = false;
+        console.error(err);
+      }
+    );
+  }
+
+  RFQLineItemSchedulesDialog(schedules: RFQLineItemSchedule[]): void {
+    const dialogConfig: MatDialogConfig = {
+      data: schedules,
+      panelClass: 'rfqline-item-schedule-line-dialog'
+    };
+    const dialogRef = this.dialog.open(RFQLineItemScheduleLineDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          // this.UpdateRFQStatus(rfq);
+        }
+      });
+  }
+  onKeydown(event): boolean {
+    // console.log(event.key);
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
