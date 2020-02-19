@@ -259,4 +259,43 @@
   .btnOuter {
     color: #efb577 !important;
   }
+
+
+  .TileClass {
+    // border-radius: 10px;
+    padding: 10px 0px;
+    cursor: pointer;
+  }
+  .successBgColor {
+    background-image: linear-gradient(to right top, #1f551f, #2a7a2f, #33a240, #3acb52, #3ef666) !important;
+  }
+
+  .primaryBgColor {
+    background-image: linear-gradient(to right top, #00356a, #00659b, #0099c7, #12cfeb) !important;
+  }
+
+  .warningBgColor {
+    background-image: linear-gradient(to right top, #aa690e, #bd8226, #d19c3b, #e3b652, #f6d169) !important;
+  }
+
+  .dangerBgColor {
+    background-image: linear-gradient(to right top, #d10c25, #de353e, #ea5057, #f46870, #fd7f88) !important;
+  }
+
+  .whiteFont {
+    color: white;
+  }
+  .vertCenter {
+    vertical-align: middle;
+  }
+  .titleClass {
+    @extend .whiteFont;
+    @extend .vertCenter;
+    padding-left: 15%;
+  }
+  .subTitleClass {
+    @extend .titleClass;
+    border-left: 1px solid white;
+  }
+
 }

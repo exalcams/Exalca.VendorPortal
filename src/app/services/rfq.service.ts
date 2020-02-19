@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
-import { RFQWithItem, RFQHeader, RFQWithLineItem, RFQLineItemSchedule } from 'app/models/rfq.module';
+import { RFQWithItem, RFQHeader, RFQWithLineItem, RFQLineItemSchedule, RFQStatusCount } from 'app/models/rfq.module';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -35,8 +35,13 @@ export class RFQService {
       .pipe(catchError(this.errorHandler));
   }
 
-  GetRFQByVendor(Vendor: string): Observable<RFQHeader[] | string> {
-    return this._httpClient.get<RFQHeader[]>(`${this.baseAddress}api/RFQ/GetRFQByVendor?Vendor=${Vendor}`)
+  GetRFQStatusCountByVendor(Vendor: string): Observable<RFQStatusCount | string> {
+    return this._httpClient.get<RFQStatusCount>(`${this.baseAddress}api/RFQ/GetRFQStatusCountByVendor?Vendor=${Vendor}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetRFQByVendor(Vendor: string, STATUS: string): Observable<RFQHeader[] | string> {
+    return this._httpClient.get<RFQHeader[]>(`${this.baseAddress}api/RFQ/GetRFQByVendor?Vendor=${Vendor}&STATUS=${STATUS}`)
       .pipe(catchError(this.errorHandler));
   }
 

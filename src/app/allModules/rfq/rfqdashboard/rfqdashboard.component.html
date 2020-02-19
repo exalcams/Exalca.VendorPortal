@@ -1,14 +1,77 @@
 <div id="chat" class=" page-layout carded fullwidth" fusePerfectScrollbar>
-  <div class="center" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
-    <div fxFlex class="mt-20">
+  <div class="center" class="p-8" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
+    <div class="mb-0">
+      <div class="container" fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center"
+        fxLayoutGap="10px" fxLayoutGap.xs="10">
+        <div fxFlex class="TileClass warningBgColor" (click)="tabone()">
+          <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+            <div fxFlex="70%">
+              <h2 class="titleClass">
+                Open RFQ
+              </h2>
+            </div>
+            <div fxFlex="30%">
+              <h2 class="subTitleClass">
+                {{rfqStatusCount?.OpenRFQCount}}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex class="TileClass primaryBgColor" (click)="tabtwo()">
+          <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+            <div fxFlex="70%">
+              <h2 class="titleClass">
+                Responded RFQ
+              </h2>
+            </div>
+            <div fxFlex="30%">
+              <h2 class="subTitleClass">
+                {{rfqStatusCount?.RespondedRFQCount}}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex class="TileClass successBgColor" (click)="tabthree()">
+          <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+            <div fxFlex="70%">
+              <h2 class="titleClass">
+                Released RFQ
+              </h2>
+            </div>
+            <div fxFlex="30%">
+              <h2 class="subTitleClass">
+                {{rfqStatusCount?.ReleasedRFQCount}}
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div fxFlex class="TileClass dangerBgColor" (click)="tabfour()">
+          <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+            <div fxFlex="70%">
+              <h2 class="titleClass">
+                All RFQ
+              </h2>
+            </div>
+            <div fxFlex="30%">
+              <h2 class="subTitleClass">
+                {{rfqStatusCount?.AllRFQCount}}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex class="mt-20" fxLayout="column">
       <mat-card class="fullHeight p-12">
         <mat-card-content>
           <div fxLayout="row">
-            <div fxFlex align="end">
-              <!-- <button *ngIf="SelectedRFQ" mat-raised-button class="btnBg" (click)="RespondRFQ()">Respond</button> -->
-              <!-- <mat-icon style="height: 24px; width: 40px;margin-left: -10px;color: red;">dashboard</mat-icon>
-              <mat-icon style="height: 24px; width: 40px;margin-left: -10px;" svgIcon="dashboardIcon"></mat-icon> -->
+            <div fxFlex class="boldClass" fxLayoutAlign="center center">
+              {{currentStatus}} RFQ
             </div>
+            <!-- <div fxFlex align="end">
+            </div> -->
           </div>
           <div fxLayout="row" class="mt-8">
             <div fxFlex="100">

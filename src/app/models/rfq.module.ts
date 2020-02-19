@@ -146,3 +146,10 @@ export class RFQLineItemSchedule {
     RESPDELDATE: string;
     DATE_FORMAT: string;
 }
+
+export class RFQStatusCount {
+    AllRFQCount: number;
+    OpenRFQCount: number;
+    RespondedRFQCount: number;
+    ReleasedRFQCount: number;
+}

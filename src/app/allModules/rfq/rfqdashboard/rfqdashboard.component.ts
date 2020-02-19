@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 import { RFQService } from 'app/services/rfq.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
-import { RFQHeader } from 'app/models/rfq.module';
+import { RFQHeader, RFQStatusCount } from 'app/models/rfq.module';
 import { ShareParameterServiceService } from 'app/services/share-parameter-service.service';
 import { fuseAnimations } from '@fuse/animations';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
@@ -34,6 +34,8 @@ export class RFQDashboardComponent implements OnInit {
   IsProgressBarVisibile: boolean;
   SelectedRFQ: RFQHeader;
   RFQs: RFQHeader[] = [];
+  rfqStatusCount: RFQStatusCount;
+  currentStatus: string;
   BGClassName: any;
   RFQColumns: string[] = ['RFQNUMBER', 'RFQTYPE', 'CURRENCY', 'SUBMISSION_STARTS', 'SUBMISSION_CLOSE',
     'PURCAHSE_PERDIOD_START', 'PURCAHSE_PERDIOD_END', 'STATUS', 'Action'];
@@ -54,6 +56,8 @@ export class RFQDashboardComponent implements OnInit {
     private dialog: MatDialog,
     private _datePipe: DatePipe
   ) {
+    this.rfqStatusCount = new RFQStatusCount();
+    this.currentStatus = 'Open';
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
   }
@@ -73,6 +77,7 @@ export class RFQDashboardComponent implements OnInit {
       this._router.navigate(['/auth/login']);
     }
     this.ResetValues();
+    this.GetRFQStatusCountByVendor();
     this.GetRFQByVendor();
   }
 
@@ -87,9 +92,41 @@ export class RFQDashboardComponent implements OnInit {
     }
   }
 
+  GetRFQStatusCountByVendor(): void {
+    this.IsProgressBarVisibile = true;
+    this._rfqService.GetRFQStatusCountByVendor(this.CurrentUserName).subscribe(
+      (data) => {
+        this.rfqStatusCount = data as RFQStatusCount;
+        this.IsProgressBarVisibile = false;
+      },
+      (err) => {
+        console.error(err);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+
+  tabone(): void {
+    this.currentStatus = 'Open';
+    this.GetRFQByVendor();
+  }
+  tabtwo(): void {
+    this.currentStatus = 'Responded';
+    this.GetRFQByVendor();
+  }
+  tabthree(): void {
+    this.currentStatus = 'Released';
+    this.GetRFQByVendor();
+  }
+  tabfour(): void {
+    this.currentStatus = 'All';
+    this.GetRFQByVendor();
+  }
+
+
   GetRFQByVendor(): void {
     this.IsProgressBarVisibile = true;
-    this._rfqService.GetRFQByVendor(this.CurrentUserName).subscribe(
+    this._rfqService.GetRFQByVendor(this.CurrentUserName, this.currentStatus).subscribe(
       (data) => {
         this.RFQs = data as RFQHeader[];
         this.RFQDataSource = new MatTableDataSource(this.RFQs);
