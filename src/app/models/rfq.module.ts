@@ -4,8 +4,8 @@ export class RFQHeader {
     EVALUATE_BY?: Date;
     SUBMISSION_STARTS?: Date;
     SUBMISSION_CLOSE?: Date;
-    PURCAHSE_PERDIOD_START?: Date;
-    PURCAHSE_PERDIOD_END?: Date;
+    PURCHASE_PERIOD_START?: Date;
+    PURCHASE_PERIOD_END?: Date;
     CURRENCY: string;
     EXCAHANGE_RATE: string;
     VENDOR: string;
@@ -61,8 +61,8 @@ export class RFQWithItem {
     EVALUATE_BY?: Date;
     SUBMISSION_STARTS?: Date;
     SUBMISSION_CLOSE?: Date;
-    PURCAHSE_PERDIOD_START?: Date;
-    PURCAHSE_PERDIOD_END?: Date;
+    PURCHASE_PERIOD_START?: Date;
+    PURCHASE_PERIOD_END?: Date;
     CURRENCY: string;
     EXCAHANGE_RATE: string;
     VENDOR: string;
@@ -89,8 +89,8 @@ export class RFQWithLineItem {
     EVALUATE_BY?: Date;
     SUBMISSION_STARTS?: Date;
     SUBMISSION_CLOSE?: Date;
-    PURCAHSE_PERDIOD_START?: Date;
-    PURCAHSE_PERDIOD_END?: Date;
+    PURCHASE_PERIOD_START?: Date;
+    PURCHASE_PERIOD_END?: Date;
     CURRENCY: string;
     EXCAHANGE_RATE: string;
     VENDOR: string;

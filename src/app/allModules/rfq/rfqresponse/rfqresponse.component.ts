@@ -94,7 +94,7 @@ export class RFQResponseComponent implements OnInit {
     this.RFQResponseItemFormGroup = this._formBuilder.group({
       RFQItems: this.RFQItemFormArray
     });
-    // this.SelectedRFQWithItem.PURCAHSE_PERDIOD_END
+    // this.SelectedRFQWithItem.PURCHASE_PERIOD_END
     this.GetRFQByRFQNumber();
   }
 

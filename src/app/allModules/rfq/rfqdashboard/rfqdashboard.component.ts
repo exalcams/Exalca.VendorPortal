@@ -38,7 +38,7 @@ export class RFQDashboardComponent implements OnInit {
   currentStatus: string;
   BGClassName: any;
   RFQColumns: string[] = ['RFQNUMBER', 'RFQTYPE', 'CURRENCY', 'SUBMISSION_STARTS', 'SUBMISSION_CLOSE',
-    'PURCAHSE_PERDIOD_START', 'PURCAHSE_PERDIOD_END', 'STATUS', 'Action'];
+    'PURCHASE_PERIOD_START', 'PURCHASE_PERIOD_END', 'STATUS', 'Action'];
   RFQDataSource: MatTableDataSource<RFQHeader>;
   selection = new SelectionModel<RFQHeader>(true, []);
 

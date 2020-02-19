@@ -27,16 +27,16 @@
                 <div fxFlex class="p-4 subTitle mt-4" style="--textDec:underline">Validity</div>
               </div>
               <div fxLayout fxLayoutAlign="space-between center" class="px-4 fontSize mt-2" style="--siz:13px">
-                <div fxFlex>Starts : {{SelectedRFQWithItem.PURCAHSE_PERDIOD_START | date:'dd/MM/yy'}}
+                <div fxFlex>Starts : {{SelectedRFQWithItem.PURCHASE_PERIOD_START | date:'dd/MM/yy'}}
                 </div>
                 <div fxFlex align="end">Ends :
-                  {{SelectedRFQWithItem.PURCAHSE_PERDIOD_END  | date:'dd/MM/yy'}}</div>
+                  {{SelectedRFQWithItem.PURCHASE_PERIOD_END  | date:'dd/MM/yy'}}</div>
               </div>
             </mat-card>
           </div>
         </div>
         <div class="sidenav-content" fusePerfectScrollbar fxFlex>
-          <div fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="borderRightClass">
             <form autocomplete="off" name="form" [formGroup]="RFQResponseFormGroup" novalidate>
               <div fxLayout fxLayoutAlign="start center" class="pt-8">
                 <mat-form-field class="pl-8" fxFlex>
@@ -133,7 +133,7 @@
               <div formArrayName="RFQItems"
                 *ngFor="let ite of RFQResponseItemFormGroup.get('RFQItems')['controls']; let i = index">
                 <div [formGroupName]="i">
-                  <mat-card fxLayout class="p-4 m-4">
+                  <mat-card fxLayout class="p-4 m-4 ml-8">
                     <div fxFlex="95" class="p-4">
                       <div fxLayout="column">
                         <div fxFlex fxLayout>
@@ -175,9 +175,16 @@
                           </div>
                         </div>
                         <div fxFlex fxLayout>
-                          <div fxFlex fxLayoutAlign="start center">
-                            <span class="boldClass mx-4">Material :</span>
-                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('MATERIAL')?.value | removeLeadingZero}}
+                          <div fxFlex fxLayout="column" fxLayoutAlign="start start">
+                            <div fxFlex>
+                              <span class="boldClass mx-4">Material :</span>
+                              {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('MATERIAL')?.value | removeLeadingZero}}
+                            </div>
+                            <div fxFlex>
+                              <span class="boldClass mx-4">
+                              {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('SHORT_TEXT')?.value}}
+                            </span>
+                            </div>
                           </div>
                           <div fxFlex>
                             <mat-form-field class="pl-8" fxFlex>
@@ -212,9 +219,8 @@
                         </div>
                         <div fxFlex fxLayout>
                           <div fxFlex fxLayoutAlign="start center">
-                            <span class="boldClass mx-4">
-                              {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('SHORT_TEXT')?.value}}
-                            </span>
+                            <span class="boldClass mx-4" *ngIf="RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('PLANT')?.value">Plant :</span>
+                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('PLANT')?.value | removeLeadingZero}}
                           </div>
                           <div fxFlex>
                             <mat-form-field class="pl-8" fxFlex>
@@ -254,8 +260,8 @@
                         </div>
                         <div fxFlex fxLayout>
                           <div fxFlex fxLayoutAlign="start center">
-                            <span class="boldClass mx-4">Plant :</span>
-                            {{RFQResponseItemFormGroup.get('RFQItems')['controls'][i]?.get('PLANT')?.value | removeLeadingZero}}
+
+
                           </div>
                           <div fxFlex>
                             <mat-form-field class="pl-8" fxFlex>
